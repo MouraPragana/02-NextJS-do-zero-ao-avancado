@@ -1,72 +1,39 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 
-interface Iuser {
-  nome: string;
-  email: string;
-  idade: string;
-}
-
 export function App() {
-  const [nome, setNome] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [idade, setIdade] = useState<string>("");
-  const [user, setUser] = useState({ nome: "", email: "", idade: "" } as Iuser);
+  const [input, setInput] = useState<string>("");
+  const [tarefas, setTarefas] = useState<string[]>([
+    "Pagar a conta de luz",
+    "Estudar ReactTS",
+  ]);
 
   function handleRegister(e: FormEvent) {
     e.preventDefault();
-    alert("Usuario registrado com sucesso !");
-    setUser({ email, idade, nome });
+    setTarefas((oldState) => [...oldState, input]);
+    setInput("");
   }
 
   return (
     <div>
       <form onSubmit={handleRegister}>
-        <h1>Cadastrando usuário</h1>
-        <label>Nome:</label>
+        <label>Nome da tarefa:</label>
         <br />
         <input
-          placeholder="Digite seu nome"
-          value={nome}
+          placeholder="Digite uma tarefa"
+          value={input}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setNome(e.target.value)
+            setInput(e.target.value)
           }
         />
         <br />
-
-        <label>Email:</label>
-        <br />
-        <input
-          placeholder="Digite seu email"
-          value={email}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
-        />
-        <br />
-
-        <label>Idade:</label>
-        <br />
-        <input
-          placeholder="Digite sua idade"
-          value={idade}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setIdade(e.target.value)
-          }
-        />
-        <br />
-
         <button type="submit">Registrar</button>
       </form>
-      <br />
-      <br />
 
-      <div>
-        <span>Bem vindo: {user.nome}</span>
-        <br />
-        <span>Idade: {user.idade}</span>
-        <br />
-        <span>Email: {user.email}</span>
-      </div>
+      <ul>
+        {tarefas.map((tarefa) => (
+          <li key={tarefa}>{tarefa}</li>
+        ))}
+      </ul>
     </div>
   );
 }
