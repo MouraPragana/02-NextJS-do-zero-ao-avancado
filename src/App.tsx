@@ -1,11 +1,20 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect } from "react";
 
 export function App() {
   const [input, setInput] = useState<string>("");
-  const [tarefas, setTarefas] = useState<string[]>([
-    "Pagar a conta de luz",
-    "Estudar ReactTS",
-  ]);
+  const [tarefas, setTarefas] = useState<string[]>(() => {
+    const tarefasStorage = localStorage.getItem("@tarefas");
+
+    if (tarefasStorage) {
+      return JSON.parse(tarefasStorage);
+    }
+
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("@tarefas", JSON.stringify(tarefas));
+  }, [tarefas]);
 
   function handleRegister(e: FormEvent) {
     e.preventDefault();
